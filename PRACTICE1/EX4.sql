@@ -5,7 +5,7 @@ Input Format
 
 The STATION table is described as follows:
 */
-
+// CÁCH 1
 SELECT DISTINCT CITY  
 FROM STATION  
 WHERE CITY LIKE 'A%'  
@@ -13,10 +13,16 @@ WHERE CITY LIKE 'A%'
    OR CITY LIKE 'I%'  
    OR CITY LIKE 'O%'  
    OR CITY LIKE 'U%';
+
 //cach 2:
 SELECT DISTINCT CITY  
 FROM STATION  
 WHERE CITY REGEXP '^[AEIOUaeiou]';
+// CACH 3:
+   
+SELECT DISTINCT CITY  
+FROM STATION  
+WHERE LEFT(CITY, 1) IN ('A', 'E', 'I', 'O', 'U');
 
 Giải thích:
 DISTINCT: Đảm bảo kết quả không có giá trị trùng lặp.
