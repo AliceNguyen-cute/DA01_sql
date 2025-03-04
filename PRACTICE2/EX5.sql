@@ -1,0 +1,7 @@
+SELECT CANDIDATE_ID
+FROM CANDIDATES
+WHERE skill IN ('Python', 'Tableau', 'PostgreSQL')
+
+GROUP BY CANDIDATE_ID
+
+HAVING COUNT( skill) = 3
