@@ -103,6 +103,50 @@ HAVING SUM(AMOUNT) > 100)
 
 
 --CORRELATED SUBUERY IN SELECT:
+-- C1: group by bằng b.customer_id
+select 
+b.customer_id,
+a.first_name || a.last_name,
+b.payment_id,
+(select MAX(amount) from payment
+where customer_id = b.customer_id
+group by customer_id)
+from customer a
+join payment as b 
+on a.customer_id = b.customer_id
+group by b.customer_id,
+a.first_name || a.last_name,
+b.payment_id
+order by customer_id
+-- C2: group by bằng a.customer_id
+select 
+a.customer_id,
+a.first_name || a.last_name,
+b.payment_id,
+(select MAX(amount) from payment
+where customer_id = a.customer_id
+group by customer_id)
+from customer a
+join payment as b 
+on a.customer_id = b.customer_id
+group by a.customer_id,
+a.first_name || a.last_name,
+b.payment_id
+order by customer_id
+ 
+--EX1:
+ -- C1: DÙNG FROM VÀ JOIN 
+select *
+from payment a
+join 
+(select customer_id,
+count (*) as count_payment,
+sum(amount) as sum_amount
+from payment
+group by customer_id) b
+on a.customer_id = b.customer_id
+ -- C2:
+
 
 
 
