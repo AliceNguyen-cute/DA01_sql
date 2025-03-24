@@ -146,6 +146,34 @@ from payment
 group by customer_id) b
 on a.customer_id = b.customer_id
  -- C2:
+ 
+select a.*,
+(select 
+count(*)
+from payment b
+where a.customer_id = b.customer_id
+group by customer_id),
+
+(select 
+sum(amount)
+from payment c
+where a.customer_id = c.customer_id
+group by customer_id
+)
+from payment a
+
+--EX2:
+
+select film_id, title, rating, replacement_cost,
+(select avg(replacement_cost)
+from film a
+where a.rating = b.rating
+group by rating)
+from film b
+where replacement_cost =(
+select max(replacement_cost) from film c
+where b.rating = c.rating
+group by rating )
 
 
 
