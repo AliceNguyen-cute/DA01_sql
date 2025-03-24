@@ -176,6 +176,57 @@ where b.rating = c.rating
 group by rating )
 
 
+----CTE:
+WITH TOTAL_PAYMENT 
+AS
+(
+select customer_id,
+count(payment_id) as so_luong,
+sum(amount) as so_tien
+from payment
+group by customer_id
+),
+
+AVG_RENTAL_TIME
+AS 
+(
+SELECT CUSTOMER_ID,  AVG(RETURN_DATE - RENTAL_DATE) AS RENTAL_TIME FROM RENTAL
+ GROUP BY CUSTOMER_ID
+ )
+
+SELECT a.customer_id, a.first_name,b.so_luong,b.so_tien,c.rental_time
+from customer as a
+join TOTAL_PAYMENT as b
+on a.customer_id = b.customer_id
+join AVG_RENTAL_TIME c
+on  b.customer_id = c.customer_id
+where b.so_luong >30
+
+----
+WITH sl AS (
+    SELECT customer_id, 
+	COUNT(payment_id) AS so_luong
+    FROM payment
+    GROUP BY customer_id
+),
+tb AS (
+    SELECT customer_id, 
+	AVG(amount) AS avg_amount
+    FROM payment
+    GROUP BY customer_id
+)
+SELECT 
+    a.customer_id, 
+    a.first_name, 
+    b.so_luong, 
+    c.avg_amount, 
+    d.amount,
+	d.payment_id
+FROM customer AS a
+JOIN sl AS b ON a.customer_id = b.customer_id
+JOIN tb AS c ON a.customer_id = c.customer_id
+JOIN payment d ON a.customer_id = d.customer_id
+where d.amount > c.avg_amount
 
 
 
