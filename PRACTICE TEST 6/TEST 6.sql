@@ -9,6 +9,18 @@ GROUP BY company_id, title, description
 select count(distinct company_id) as duplicate_companies
 from job_count_table 
 where job_count > 1
+
+with count_table as (select company_id, title, description, 
+count(*) as count_company
+from job_listings 
+group by company_id, title, description 
+)
+select 
+count(company_id) as duplicate_companies
+from count_table 
+where count_company > 1 
+
+  
 -- BÀI 2:
   
 (SELECT CATEGORY, PRODUCT,
