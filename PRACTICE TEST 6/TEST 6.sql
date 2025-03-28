@@ -65,3 +65,26 @@ WHERE B.page_id IS NULL
 ORDER BY A.PAGE_ID ASC
 
 -- BÀI 5:
+SELECT 
+    LEFT(trans_date, 7) AS month, 
+    country,
+    COUNT(id) AS trans_count,
+    COUNT(CASE WHEN state = 'approved' THEN id ELSE NULL END) AS approved_count,
+    SUM(amount) AS trans_total_amount, 
+    SUM(CASE WHEN state = 'approved' THEN amount ELSE 0 END) AS approved_total_amount 
+FROM Transactions
+GROUP BY 1, 2;  
+----------------------------------------------------------------------------
+SELECT 
+    date_format(trans_date,'%Y-%m') AS 'month', 
+    country,
+    COUNT(id) AS trans_count,
+    COUNT(CASE WHEN state = 'approved' THEN id ELSE NULL END) AS approved_count,
+    SUM(amount) AS trans_total_amount, 
+    SUM(CASE WHEN state = 'approved' THEN amount ELSE 0 END) AS approved_total_amount 
+FROM Transactions
+GROUP BY 1, 2;
+
+-- BÀI 6:
+
+
